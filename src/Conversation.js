@@ -2,7 +2,7 @@ import React, { Component, Children } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './index.css';
 
-class Dialog extends Component {
+class Conversation extends Component {
   constructor() {
     super();
 
@@ -77,4 +77,4 @@ class Dialog extends Component {
   }
 }
 
-export default Dialog;
+export default Conversation;
