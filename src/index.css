@@ -1,0 +1,90 @@
+* {
+  font-family: 'PT Sans';
+}
+
+body {
+  background-color: #eaeaea;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.dialog {
+  height: 450px;
+  width: 500px;
+  border-radius: 2px;
+  background-color: #fff;
+  padding: 25px;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.dialog-message {
+  margin-bottom: 2px;
+  width: 100%;
+  transition: bottom 300ms linear;
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+}
+
+.dialog-message__text {
+  background-color: #3d3d3d;
+  padding: 15px 20px;
+  border-radius: 30px;
+  color: #fff;
+  display: inline-block;
+  min-width: 50px;
+  font-size: 14px;
+  border-bottom-left-radius: 0px;
+  text-align: left;
+}
+
+.dialog-message.dialog-message--me {
+  text-align: right;
+  left: auto;
+  right: 25px;
+}
+
+.dialog-message--me .dialog-message__text {
+  background-color: #aaa;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 0px;
+}
+
+.message-enter {
+  opacity: 0.01;
+}
+
+.dialog-message.message-enter {
+  transform: translateX(-20%);
+}
+
+.dialog-message.dialog-message--me.message-enter {
+  transform: translateX(20%);
+}
+
+.dialog-message.message-enter-active,
+.dialog-message.dialog-message--me.message-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: all 300ms linear;
+}
+
+.message-exit {
+  opacity: 1;
+}
+
+.message-exit-active {
+  opacity: 0.01;
+  transition: all 300ms linear;
+}

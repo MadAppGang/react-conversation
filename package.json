@@ -1,0 +1,16 @@
+{
+  "name": "react-dialog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "react": "^16.7.0",
+    "react-transition-group": "^2.5.2"
+  },
+  "author": "MadAppGang",
+  "license": "MIT"
+}
