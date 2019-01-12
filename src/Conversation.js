@@ -1,15 +1,16 @@
 import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { sum, pluck } from './utils';
 import './index.css';
 
 class Conversation extends Component {
   constructor() {
     super();
 
-    this.timeout = 300;
+    // TODO: get rid of padding hardcode
     this.paddings = {
       bottom: 25,
-      left: 25,
     };
 
     this.state = {
@@ -17,33 +18,33 @@ class Conversation extends Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.children.length < state.childrenHeights.length) {
-      const index = state.childrenHeights.findIndex((obj) => {
-        return !props.children.map(child => child.key).includes(obj.key);
+  static getDerivedStateFromProps({ children }, { childrenHeights }) {
+    const didChildrenDecrease = children.length < childrenHeights.length;
+
+    if (didChildrenDecrease) {
+      const removedChildIndex = childrenHeights.findIndex(({ key }) => {
+        return !children.map(pluck('key')).includes(key);
       });
 
-      const nextHeights = [...state.childrenHeights];
-
-      nextHeights.splice(index, 1);
-
       return {
-        childrenHeights: nextHeights,
+        childrenHeights: childrenHeights.filter((_, i) => i !== removedChildIndex),
       };
     }
 
     return null;
   }
 
-  setHeightForIndex(index, key, height) {
-    const { childrenHeights } = this.state;
-    const nextHeights = [...childrenHeights];
+  setHeightForKey(key, height) {
+    this.setState(state => ({
+      childrenHeights: state.childrenHeights.concat({ key, height }),
+    }));
+  }
 
-    nextHeights[index] = { key, height };
-
-    this.setState({
-      childrenHeights: nextHeights,
-    });
+  calculateBottomForIndex(index) {
+    return this.state.childrenHeights
+      .slice(index + 1)
+      .map(pluck('height'))
+      .reduce(sum, this.paddings.bottom);
   }
 
   render() {
@@ -52,29 +53,32 @@ class Conversation extends Component {
     return (
       <div className="dialog">
         <TransitionGroup>
-          {Children.map(children, (child, index) => {
-
-            const bottom = this.state.childrenHeights
-              .slice(index + 1)
-              .map(obj => obj.height)
-              .reduce((a, b) => a + b, this.paddings.bottom);
-
-            return (
-              <CSSTransition
-                timeout={this.timeout}
-                classNames="message"
-              >
-                {React.cloneElement(child, {
-                  bottom,
-                  onHeight: height => this.setHeightForIndex(index, child.key, height),
-                })}
-              </CSSTransition>
-            );
-          })}
+          {Children.map(children, (child, index) => (
+            <CSSTransition
+              timeout={300}
+              classNames="message"
+            >
+              {React.cloneElement(child, {
+                bottom: this.calculateBottomForIndex(index),
+                onHeight: height => this.setHeightForKey(child.key, height),
+              })}
+            </CSSTransition>
+          ))}
         </TransitionGroup>
       </div>
     );
   }
 }
+
+Conversation.defaultProps = {
+  children: [],
+};
+
+Conversation.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
 
 export default Conversation;
