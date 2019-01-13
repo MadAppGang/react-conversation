@@ -5,8 +5,7 @@ import { px } from './utils';
 
 class Message extends Component {
   componentDidMount() {
-    // TODO: get rid of margin hardcode
-    this.props.onHeight(this.ref.clientHeight + 2);
+    this.props.onHeight(this.ref.clientHeight);
   }
 
   render() {

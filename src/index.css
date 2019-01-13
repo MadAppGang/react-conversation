@@ -8,7 +8,6 @@
 }
 
 .conversation-message {
-  margin-bottom: 2px;
   transition: bottom 300ms linear;
   position: absolute;
   left: 0;

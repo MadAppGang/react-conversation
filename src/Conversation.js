@@ -29,10 +29,6 @@ class Conversation extends Component {
     return null;
   }
 
-  scroll(position) {
-    this.ref.scrollTop = position;
-  }
-
   getSnapshotBeforeUpdate() {
     if (this.isScrolledToBottom()) {
       return null;
@@ -51,6 +47,10 @@ class Conversation extends Component {
     }
   }
 
+  scroll(position) {
+    this.ref.scrollTop = position;
+  }
+
   isScrolledToBottom() {
     const { scrollTop, scrollHeight, clientHeight } = this.ref;
 
@@ -58,8 +58,13 @@ class Conversation extends Component {
   }
 
   setHeightForKey(key, height) {
+    const record = {
+      key,
+      height: height + this.props.gap,
+    };
+
     this.setState(state => ({
-      childrenHeights: state.childrenHeights.concat({ key, height }),
+      childrenHeights: state.childrenHeights.concat(record),
     }));
   }
 
@@ -125,6 +130,7 @@ Conversation.defaultProps = {
     width: 500,
   },
   paddings: {},
+  gap: 5,
 };
 
 Conversation.propTypes = {
@@ -142,6 +148,7 @@ Conversation.propTypes = {
     left: PropTypes.number,
     right: PropTypes.number,
   }),
+  gap: PropTypes.number,
 };
 
 export default Conversation;
