@@ -1,40 +1,21 @@
-* {
-  font-family: 'PT Sans';
-}
-
-body {
-  background-color: #eaeaea;
-}
-
-.container {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
 .dialog {
-  height: 450px;
   width: 500px;
   border-radius: 2px;
   background-color: #fff;
   padding: 25px;
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.dialog-wrapper {
   position: relative;
 }
 
 .dialog-message {
   margin-bottom: 2px;
-  width: 100%;
   transition: bottom 300ms linear;
   position: absolute;
-  left: 25px;
-  bottom: 25px;
+  left: 0;
+  bottom: 0;
 }
 
 .dialog-message__text {
@@ -52,7 +33,7 @@ body {
 .dialog-message.dialog-message--me {
   text-align: right;
   left: auto;
-  right: 25px;
+  right: 0;
 }
 
 .dialog-message--me .dialog-message__text {

@@ -1,17 +1,15 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { sum, pluck } from './utils';
+import { sum, pluck, scrollBottom } from './utils';
 import './index.css';
 
 class Conversation extends Component {
   constructor() {
     super();
 
-    // TODO: get rid of padding hardcode
-    this.paddings = {
-      bottom: 25,
-    };
+    // TODO: get rid of hardcode
+    this.viewportHeight = 450;
 
     this.state = {
       childrenHeights: [],
@@ -34,6 +32,12 @@ class Conversation extends Component {
     return null;
   }
 
+  componentDidUpdate() {
+    // TODO: scroll bottom only if were in the bottom before update
+    // possibly use the "getSnapshotBeforeUpdate" lifecycle method
+    scrollBottom(this.ref);
+  }
+
   setHeightForKey(key, height) {
     this.setState(state => ({
       childrenHeights: state.childrenHeights.concat({ key, height }),
@@ -44,27 +48,46 @@ class Conversation extends Component {
     return this.state.childrenHeights
       .slice(index + 1)
       .map(pluck('height'))
-      .reduce(sum, this.paddings.bottom);
+      .reduce(sum, 0);
+  }
+
+  calculateContainerHeight() {
+    const height = this.calculateBottomForIndex(-1);
+    
+    if (height < this.viewportHeight) {
+      return this.viewportHeight;
+    }
+
+    return height;
   }
 
   render() {
     const { children } = this.props;
 
     return (
-      <div className="dialog">
-        <TransitionGroup>
-          {Children.map(children, (child, index) => (
-            <CSSTransition
-              timeout={300}
-              classNames="message"
-            >
-              {React.cloneElement(child, {
-                bottom: this.calculateBottomForIndex(index),
-                onHeight: height => this.setHeightForKey(child.key, height),
-              })}
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
+      <div
+        className="dialog"
+        style={{ height: `${this.viewportHeight}px` }}
+        ref={el => this.ref = el}
+      >
+        <div
+          className="dialog-wrapper"
+          style={{ height: `${this.calculateContainerHeight()}px` }}
+        >
+          <TransitionGroup>
+            {Children.map(children, (child, index) => (
+              <CSSTransition
+                timeout={300}
+                classNames="message"
+              >
+                {React.cloneElement(child, {
+                  bottom: this.calculateBottomForIndex(index),
+                  onHeight: height => this.setHeightForKey(child.key, height),
+                })}
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </div>
       </div>
     );
   }
