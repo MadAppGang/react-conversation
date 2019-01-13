@@ -1,15 +1,12 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { sum, pluck, scrollBottom } from './utils';
+import { px, sum, pluck, scrollBottom } from './utils';
 import './index.css';
 
 class Conversation extends Component {
   constructor() {
     super();
-
-    // TODO: get rid of hardcode
-    this.viewportHeight = 450;
 
     this.state = {
       childrenHeights: [],
@@ -52,27 +49,29 @@ class Conversation extends Component {
   }
 
   calculateContainerHeight() {
+    const { viewport } = this.props;
     const height = this.calculateBottomForIndex(-1);
     
-    if (height < this.viewportHeight) {
-      return this.viewportHeight;
+    if (height < viewport.height) {
+      return viewport.height;
     }
 
     return height;
   }
 
   render() {
-    const { children } = this.props;
+    const { children, viewport } = this.props;
+
+    const viewportStyle = {
+      height: px(viewport.height),
+      width: px(viewport.width),
+    };
 
     return (
-      <div
-        className="conversation"
-        style={{ height: `${this.viewportHeight}px` }}
-        ref={el => this.ref = el}
-      >
+      <div style={viewportStyle} className="conversation" ref={el => this.ref = el}>
         <div
           className="conversation-wrapper"
-          style={{ height: `${this.calculateContainerHeight()}px` }}
+          style={{ height: px(this.calculateContainerHeight()) }}
         >
           <TransitionGroup>
             {Children.map(children, (child, index) => (
@@ -95,6 +94,10 @@ class Conversation extends Component {
 
 Conversation.defaultProps = {
   children: [],
+  viewport: {
+    height: 450,
+    width: 500,
+  },
 };
 
 Conversation.propTypes = {
@@ -102,6 +105,10 @@ Conversation.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  viewport: {
+    height: PropTypes.number,
+    width: PropTypes.number,
+  },
 };
 
 export default Conversation;

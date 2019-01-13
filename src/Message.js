@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { px } from './utils';
 
 class Message extends Component {
   componentDidMount() {
@@ -15,7 +16,7 @@ class Message extends Component {
     });
 
     const style = {
-      bottom: `${this.props.bottom}px`,
+      bottom: px(this.props.bottom),
     };
 
     return (
