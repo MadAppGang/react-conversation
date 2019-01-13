@@ -87,7 +87,7 @@ class Conversation extends Component {
   }
 
   render() {
-    const { children, viewport, paddings } = this.props;
+    const { children, viewport, paddings, scrollable } = this.props;
 
     const viewportStyle = {
       height: px(viewport.height),
@@ -96,6 +96,7 @@ class Conversation extends Component {
       paddingBottom: px(paddings.bottom),
       paddingLeft: px(paddings.left),
       paddingRight: px(paddings.right),
+      overflowY: scrollable ? 'scroll' : 'hidden',
     };
 
     return (
@@ -130,6 +131,7 @@ Conversation.defaultProps = {
     width: 500,
   },
   paddings: {},
+  scrollable: true,
   gap: 5,
 };
 
@@ -149,6 +151,7 @@ Conversation.propTypes = {
     right: PropTypes.number,
   }),
   gap: PropTypes.number,
+  scrollable: PropTypes.bool,
 };
 
 export default Conversation;
