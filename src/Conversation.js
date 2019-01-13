@@ -60,11 +60,15 @@ class Conversation extends Component {
   }
 
   render() {
-    const { children, viewport } = this.props;
+    const { children, viewport, paddings } = this.props;
 
     const viewportStyle = {
       height: px(viewport.height),
       width: px(viewport.width),
+      paddingTop: px(paddings.top),
+      paddingBottom: px(paddings.bottom),
+      paddingLeft: px(paddings.left),
+      paddingRight: px(paddings.right),
     };
 
     return (
@@ -98,6 +102,7 @@ Conversation.defaultProps = {
     height: 450,
     width: 500,
   },
+  paddings: {},
 };
 
 Conversation.propTypes = {
@@ -105,10 +110,16 @@ Conversation.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
-  viewport: {
+  viewport: PropTypes.shape({
     height: PropTypes.number,
     width: PropTypes.number,
-  },
+  }),
+  paddings: PropTypes.shape({
+    top: PropTypes.number,
+    bottom: PropTypes.number,
+    left: PropTypes.number,
+    right: PropTypes.number,
+  }),
 };
 
 export default Conversation;
