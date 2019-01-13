@@ -1,7 +1,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { px, sum, pluck } from './utils';
+import { add, px, sum, pluck } from './utils';
 import './index.css';
 
 class Conversation extends Component {
@@ -58,13 +58,8 @@ class Conversation extends Component {
   }
 
   setHeightForKey(key, height) {
-    const record = {
-      key,
-      height: height + this.props.gap,
-    };
-
     this.setState(state => ({
-      childrenHeights: state.childrenHeights.concat(record),
+      childrenHeights: state.childrenHeights.concat({ key, height }),
     }));
   }
 
@@ -72,6 +67,7 @@ class Conversation extends Component {
     return this.state.childrenHeights
       .slice(index + 1)
       .map(pluck('height'))
+      .map(add(this.props.gap))
       .reduce(sum, 0);
   }
 
