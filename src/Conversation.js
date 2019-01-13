@@ -1,7 +1,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { px, sum, pluck, scrollBottom } from './utils';
+import { px, sum, pluck } from './utils';
 import './index.css';
 
 class Conversation extends Component {
@@ -29,10 +29,32 @@ class Conversation extends Component {
     return null;
   }
 
-  componentDidUpdate() {
-    // TODO: scroll bottom only if were in the bottom before update
-    // possibly use the "getSnapshotBeforeUpdate" lifecycle method
-    scrollBottom(this.ref);
+  scroll(position) {
+    this.ref.scrollTop = position;
+  }
+
+  getSnapshotBeforeUpdate() {
+    if (this.isScrolledToBottom()) {
+      return null;
+    }
+
+    return this.ref.scrollHeight - this.ref.scrollTop;
+  }
+
+  componentDidUpdate(s, p, prevScroll) {
+    const { scrollHeight } = this.ref;
+
+    if (prevScroll) {
+      this.scroll(scrollHeight - prevScroll);
+    } else {
+      this.scroll(scrollHeight);
+    }
+  }
+
+  isScrolledToBottom() {
+    const { scrollTop, scrollHeight, clientHeight } = this.ref;
+
+    return scrollHeight - scrollTop === clientHeight;
   }
 
   setHeightForKey(key, height) {
