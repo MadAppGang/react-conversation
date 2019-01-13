@@ -9,28 +9,18 @@ class Message extends Component {
   }
 
   render() {
-    const { text, me, bottom } = this.props;
-
     const className = classnames({
       'conversation-message': true,
-      'conversation-message--me': me,
+      'conversation-message--me': this.props.me,
     });
 
     const style = {
-      bottom: `${bottom}px`,
+      bottom: `${this.props.bottom}px`,
     };
 
-    // TODO: delegate rendering to outside
     return (
-      <div
-        ref={el => this.ref = el}
-        className={className}
-        style={style}
-        onClick={this.props.onClick}
-      >
-        <span className="conversation-message__text">
-          {text}
-        </span>
+      <div ref={el => this.ref = el} className={className} style={style}>
+        {this.props.children}
       </div>
     );
   }
@@ -39,17 +29,13 @@ class Message extends Component {
 Message.defaultProps = {
   bottom: 0,
   me: false,
-  text: '',
-  onClick: () => {},
   onHeight: () => {},
 };
 
 Message.propTypes = {
   me: PropTypes.bool,
   bottom: PropTypes.number,
-  text: PropTypes.string,
   onHeight: PropTypes.func,
-  onClick: PropTypes.func,
 };
 
 export default Message;

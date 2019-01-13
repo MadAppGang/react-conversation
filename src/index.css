@@ -18,28 +18,10 @@
   bottom: 0;
 }
 
-.conversation-message__text {
-  background-color: #3d3d3d;
-  padding: 15px 20px;
-  border-radius: 30px;
-  color: #fff;
-  display: inline-block;
-  min-width: 50px;
-  font-size: 14px;
-  border-bottom-left-radius: 0px;
-  text-align: left;
-}
-
 .conversation-message.conversation-message--me {
   text-align: right;
   left: auto;
   right: 0;
-}
-
-.conversation-message--me .conversation-message__text {
-  background-color: #aaa;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 0px;
 }
 
 .message-enter {
