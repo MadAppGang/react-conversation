@@ -12,8 +12,8 @@ class Message extends Component {
     const { text, me, bottom } = this.props;
 
     const className = classnames({
-      'dialog-message': true,
-      'dialog-message--me': me,
+      'conversation-message': true,
+      'conversation-message--me': me,
     });
 
     const style = {
@@ -28,7 +28,7 @@ class Message extends Component {
         style={style}
         onClick={this.props.onClick}
       >
-        <span className="dialog-message__text">
+        <span className="conversation-message__text">
           {text}
         </span>
       </div>

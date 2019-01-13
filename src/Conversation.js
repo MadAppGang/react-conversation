@@ -66,12 +66,12 @@ class Conversation extends Component {
 
     return (
       <div
-        className="dialog"
+        className="conversation"
         style={{ height: `${this.viewportHeight}px` }}
         ref={el => this.ref = el}
       >
         <div
-          className="dialog-wrapper"
+          className="conversation-wrapper"
           style={{ height: `${this.calculateContainerHeight()}px` }}
         >
           <TransitionGroup>
